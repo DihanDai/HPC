@@ -1,0 +1,52 @@
+\documentclass[11pt]{amsart}
+
+\usepackage{amsmath,amssymb,graphicx,bbm}
+\usepackage{amsthm,verbatim}
+\usepackage{mathrsfs,mathtools}
+\usepackage{enumerate}
+\usepackage{listings}
+\usepackage[footnotesize,bf]{caption}
+\usepackage[left=1.1in,right=1.1in,top=1in]{geometry}
+
+%\usepackage{mathdefs}
+
+%% Patch for amsart date
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd{\@maketitle}
+  {\ifx\@empty\@dedicatory}
+  {\ifx\@empty\@date \else {\vskip3ex \centering\footnotesize\@date\par\vskip1ex}\fi
+   \ifx\@empty\@dedicatory}
+  {}{}
+\patchcmd{\@adminfootnotes}
+  {\ifx\@empty\@date\else \@footnotetext{\@setdate}\fi}
+  {}{}{}
+\makeatother
+
+\title{HW 2(b): Loop Analysis}
+\author{Dihan Dai}
+\date{\today}
+
+\begin{document}
+\maketitle
+\section*{Question 3}
+\begin{lstlisting}[language = c]
+  double A[512][512], B[512][512];
+    for(k = 0;k < 512;k++)
+      for(i = 0; i <= k;i++)
+        for(j = 0;j < 512;j++)
+          C[i][j] += A[i][k] * B[k][j];          
+\end{lstlisting}
+\section*{Question 4}
+\begin{lstlisting}[language = c]
+  double A[512][512], B[512][512];
+    for(i = 0;i < 512;i = i + 2)
+      for(j = 0; j < 512;j = j + 2)
+        for(k = i;k < 512;k++){
+          C[i][j] += A[i][k] * B[k][j];
+          C[i+1][j] += A[i+1][k] * B[k][j];
+          C[i][j+1] += A[i][k] * B[k][j+1];
+          C[i+1][j+1] += A[i+1][k] * B[k][j+1];    
+        }
+\end{lstlisting}
+\end{document}

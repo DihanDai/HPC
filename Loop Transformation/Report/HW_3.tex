@@ -1,0 +1,55 @@
+\documentclass[11pt]{amsart}
+
+\usepackage{amsmath,amssymb,graphicx,bbm}
+\usepackage{amsthm,verbatim}
+\usepackage{mathrsfs,mathtools}
+\usepackage{enumerate}
+\usepackage{listings}
+\usepackage[footnotesize,bf]{caption}
+\usepackage[left=1.1in,right=1.1in,top=1in]{geometry}
+
+%\usepackage{mathdefs}
+
+%% Patch for amsart date
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd{\@maketitle}
+  {\ifx\@empty\@dedicatory}
+  {\ifx\@empty\@date \else {\vskip3ex \centering\footnotesize\@date\par\vskip1ex}\fi
+   \ifx\@empty\@dedicatory}
+  {}{}
+\patchcmd{\@adminfootnotes}
+  {\ifx\@empty\@date\else \@footnotetext{\@setdate}\fi}
+  {}{}{}
+\makeatother
+
+\title{HW 3: Loop Analysis Programs}
+\author{Dihan Dai}
+\date{\today}
+
+\begin{document}
+\maketitle
+\section*{Question 1}
+\noindent\textbf{Reason:} When size of matrix $A$ is large, there are $N$ cache misses for every $i$ loop when calculating $z$, which leads to a total of $N^2$ misses.
+
+\noindent\textbf{Solution: }
+\begin{enumerate}[Step.1]
+\item Distribute the original loop then interchange the loop for calculating $z$. Use $ij$ loop to calculate $y$, and $ji$ loop to calculate $z$.
+\item After the first step, the code haven't achieved target performance. Loop unrolling can be used to further improve the performance. (In my code I unroll the inner loop with $8$ parallel loop bodies.) 
+\end{enumerate}
+\section*{Question 2}
+\noindent\textbf{Reason: } The stride of access is $N$ for this permutation of loops. Accessing array in this way will result in more cache misses. (similar to the reason in question 1).
+
+\noindent\textbf{Solution: }
+\begin{enumerate}[Step.1]
+  \item Interchange the $ikj$ loop to $ijk$ loop. 
+  \item After the first step, the code haven't achieved target performance. Loop unrolling can be used to further improve the performance. (In my code I unroll the inner loop with $4$ parallel loop bodies.) 
+\end{enumerate}
+\section*{Question 3}
+\noindent\textbf{Reason: } The strides of $A$, $B$, $C$ are $0$, $N$ and $1$, respectively. Interchanging the loop doesn't change the stride. Therefore loop tiling (or loop unrolling) needs to be used.
+
+\noindent\textbf{Solution:}
+\begin{enumerate}[Step.1]
+  \item Introduce submatrices with sizes $32$, and calculate the matrix products for each pair of submatrices from $A$ and $B$. (In the code, I first calculate the $C = BA$ using titling then calculate $C = C^{T}$, which seems to be a little faster than the direct tiling. )
+\end{enumerate}
+\end{document}

@@ -1,0 +1,129 @@
+\documentclass[11pt]{amsart}
+
+\usepackage{amsmath,amssymb,graphicx,bbm}
+\usepackage{amsthm,verbatim}
+\usepackage{mathrsfs,mathtools}
+\usepackage{enumerate}
+\usepackage{listings}
+\usepackage{multirow}
+\usepackage[footnotesize,bf]{caption}
+\usepackage[left=1.1in,right=1.1in,top=1in]{geometry}
+
+%\usepackage{mathdefs}
+
+%% Patch for amsart date
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd{\@maketitle}
+  {\ifx\@empty\@dedicatory}
+  {\ifx\@empty\@date \else {\vskip3ex \centering\footnotesize\@date\par\vskip1ex}\fi
+   \ifx\@empty\@dedicatory}
+  {}{}
+\patchcmd{\@adminfootnotes}
+  {\ifx\@empty\@date\else \@footnotetext{\@setdate}\fi}
+  {}{}{}
+\makeatother
+
+\title{HW 7: MPI}
+\author{Dihan Dai}
+\date{\today}
+
+\begin{document}
+\maketitle
+\section*{Question 1}
+\begin{enumerate}[(a)]
+\item $\quad$
+
+\begin{table}[h]
+  \centering
+  \caption{Blocking}
+	\begin{tabular}{|c|c|c|}
+		\hline
+    Message Size&Single Node (GBytes/sec)& Dual Nodes (GBytes/sec)\\
+    \hline
+    1&0.020563&0.003240\\
+    8&0.205246&0.041166\\
+    64&0.653472&0.082522\\
+    512&2.116805&1.022126\\
+    4096&6.008567&2.931520\\
+    32768&8.290290&7.305028\\
+    262144&11.249464&11.064174\\
+    1048576&11.743154&11.754455\\
+    \hline
+	\end{tabular}
+\end{table}
+\item $\quad$
+\begin{table}[h]
+  \centering
+  \caption{Non-blocking}
+	\begin{tabular}{|c|c|c|}
+		\hline
+    Message Size&Single Node (GBytes/sec)& Dual Nodes (GBytes/sec)\\
+    \hline
+    1&0.014975&0.003374\\
+    8&0.203803&0.043088\\
+    64&0.665272&0.088325\\
+    512&2.117278&0.955206\\
+    4096&6.140279&3.256234\\
+    32768&8.311359&7.513894\\
+    262144&11.231122&11.075611\\
+    1048576&11.728460&11.765851\\
+    \hline
+	\end{tabular}
+\end{table}
+
+For both blocking and non-blocking communication, across-node communication is significantly slower than within-node communication when the size of the message is small $(\le 32768\text{K})$, but has almost the same speed as within-node communication's when the size of the message is large.
+\end{enumerate}
+\newpage
+\section*{Question 2}
+The largest size that can be run on Notchpeak without causing deadlock is \underline{$4096$K}.
+
+\begin{table}[h]
+  \centering
+  \caption{Non-blocking Ring Communication}
+	\begin{tabular}{|c|c|}
+		\hline
+    Message Size&Time (seconds)\\
+    \hline
+    1&0.000393\\
+    8&0.000381\\
+    64&0.000461\\
+    512&0.000284\\
+    4096&0.001384\\
+    32768&0.010622\\
+    262144&0.083207\\
+    1048576&0.332555\\
+    \hline
+	\end{tabular}
+\end{table}
+\newpage
+\section*{Question 3 (size 8192, Niter 10)}
+\begin{itemize}
+\item Single Node:
+
+\begin{table}[h]
+\begin{tabular}{|c|c|c|}
+  \hline
+  Number of Nodes&GFLOPs&Time (seconds)\\
+  \hline
+  2&1.33&1.007\\
+  4&3.36&0.399\\
+  8&8.49&0.158\\
+  16&14.94&0.090\\
+  \hline
+\end{tabular}
+\end{table}
+\item Dual Nodes:
+
+\begin{table}[h]
+\begin{tabular}{|c|c|c|}
+  \hline
+  Number of Nodes&GFLOPs&Time (seconds)\\
+  \hline
+  24&15.56&0.086\\
+  32&14.46&0.093\\
+  \hline
+\end{tabular}
+\end{table}
+\end{itemize}
+\end{document}

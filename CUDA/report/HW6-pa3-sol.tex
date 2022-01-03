@@ -1,0 +1,51 @@
+\documentclass[11pt]{amsart}
+
+\usepackage{amsmath,amssymb,graphicx,bbm}
+\usepackage{amsthm,verbatim}
+\usepackage{mathrsfs,mathtools}
+\usepackage{enumerate}
+\usepackage{listings}
+\usepackage[footnotesize,bf]{caption}
+\usepackage[left=1.1in,right=1.1in,top=1in]{geometry}
+
+%\usepackage{mathdefs}
+
+%% Patch for amsart date
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd{\@maketitle}
+  {\ifx\@empty\@dedicatory}
+  {\ifx\@empty\@date \else {\vskip3ex \centering\footnotesize\@date\par\vskip1ex}\fi
+   \ifx\@empty\@dedicatory}
+  {}{}
+\patchcmd{\@adminfootnotes}
+  {\ifx\@empty\@date\else \@footnotetext{\@setdate}\fi}
+  {}{}{}
+\makeatother
+
+\title{HW 6: GPU Programming}
+\author{Dihan Dai}
+\date{\today}
+
+\begin{document}
+\maketitle
+All tests are done on the machine sm75 GTX 2080 Ti. Please check summary.log for execution history. Min GFLOPS are all obtained in the very first test of each problem. The GFLOPS of the remaining tests for a same problem are consistent.
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline
+Problems& Max GFLOPS& Min GFLOPS\\
+\hline
+1 & 1237.1& 1115.6\\
+\hline
+2 & 1129.1& 1035.0\\
+\hline
+3 & 1449.0& 1305.4\\
+\hline
+4 & 1511.3& 1378.3\\
+\hline
+5 & 2200.6& 1899.1\\
+\hline
+\end{tabular}
+\end{center}
+
+\end{document}
